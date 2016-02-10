@@ -1,0 +1,138 @@
+/* -- MDL new elements & modifiers -- */
+
+    .material-icons {
+        background: rgba( 255, 255, 255, .26 );
+        transition: background .26s;
+    }
+    .material-icons:hover {
+        background: rgba( 255, 255, 255, .54 );
+    }
+    .material-icons.md-48,
+    .material-icons.md-48 {
+        font-size: 48px;
+    }
+        .material-icons.qg-container-close {
+            margin: 18px;
+            cursor: pointer;
+        }
+        .material-icons.qg-fullscreen {
+            margin: 18px 0 18px 18px;
+            cursor: pointer;
+        }
+    .material-icons.qg-scroll-left {
+        position: fixed;
+        left: 18px;
+        top: 50%;
+        cursor: pointer;
+        transform: translateY( -50% );
+        z-index: 100;
+    }
+    .material-icons.qg-scroll-right {
+        position: fixed;
+        top: 50%;
+        right: 18px;
+        cursor: pointer;
+        transform: translateY( -50% );
+        z-index: 100;
+    }
+
+/* -- QuarterGallery style sheet -- */
+
+.qg-container {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba( 0, 0, 0, .54 );
+    overflow: hidden;
+}
+    .qg-container__controls {
+        display: flex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 100;
+    }
+    [class*=qg-container__quarter-] {
+        position: fixed;
+        width: 50vw;
+        height: 50vh;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    .qg-container__quarter-1 {
+        left: 0;
+        top: 0;
+    }
+    .qg-container__quarter-2 {
+        left: 50vw;
+        top: 0;
+    }
+    .qg-container__quarter-3 {
+        left: 0;
+        top: 50vh;
+    }
+    .qg-container__quarter-4 {
+        left: 50vw;
+        top: 50vh;
+    }
+    .qg-container__quarter-1:hover ~ .material-icons.qg-scroll-left,
+    .qg-container__quarter-3:hover ~ .material-icons.qg-scroll-left,
+    .qg-container__quarter-2:hover ~ .material-icons.qg-scroll-right,
+    .qg-container__quarter-4:hover ~ .material-icons.qg-scroll-right {
+        background: rgba( 255, 255, 255, .54 );
+    }
+        [class*=qg-quarter__slide-] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            transform: rotate( 0deg ) scale( 1, 1 );
+            transition: all .7s;
+        }
+            [class*=qg-quarter__slide-] > img {
+                position: absolute;
+                transform: translate( -50%, -50% );
+            }
+            .qg-image-shrink {
+                max-width: 100vw;
+                max-height: 100vh;
+            }
+            .qg-image-expand {
+                min-width: 100vw;
+                min-height: 100vh;
+            }
+        .qg-quarter__slide-1 {
+            transform-origin: right bottom;
+            transition-delay: 0s
+        }
+            .qg-quarter__slide-1 > img {
+                left: 100%;
+                top: 100%;
+            }
+        .qg-quarter__slide-2 {
+            transform-origin: left bottom;
+            transition-delay: 0.3s
+        }
+            .qg-quarter__slide-2 > img {
+                left: 0;
+                top: 100%;
+            }
+        .qg-quarter__slide-3 {
+            transform-origin: right top;
+            transition-delay: 0.2s
+        }
+            .qg-quarter__slide-3 > img {
+                left: 100%;
+                top: 0;
+            }
+        .qg-quarter__slide-4 {
+            transform-origin: left top;
+            transition-delay: 0.1s
+        }
+            .qg-quarter__slide-4 > img {
+                left: 0;
+                top: 0;
+            }

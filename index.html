@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>QuarterGallery</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        
+        <link rel="stylesheet" type="text/css" href="style/style.css">
+        
+        <link rel="stylesheet" type="text/css" href="style/style.QuarterGallery.css">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="js/jquery.QuarterGallery.js"></script>
+        <script>
+            
+        </script>
+    </head>
+    <body>
+        <div class="open-gallery" onclick="QuarterGallery()">
+            open-gallery
+        </div>
+        
+        <div class="qg-container">
+            <div class="qg-container__controls">
+                <i class="material-icons qg-fullscreen qg-fullscreen--action">fullscreen_exit</i>
+                <i class="material-icons qg-container-close qg-container-close--action">close</i>
+            </div>
+            <div class="qg-container__quarter-1 qg-scroll-left--action">
+                <div class="qg-quarter__slide-1">
+                    <img class="qg-image-expand" src="gallery-pics/1.jpg" onerror="qgImgReload( true )">
+                </div>
+            </div>
+            <div class="qg-container__quarter-2 qg-scroll-right--action">
+                <div class="qg-quarter__slide-2">
+                    <img class="qg-image-expand" src="gallery-pics/1.jpg">
+                </div>
+            </div>
+            <div class="qg-container__quarter-3 qg-scroll-left--action">
+                <div class="qg-quarter__slide-3">
+                    <img class="qg-image-expand" src="gallery-pics/1.jpg">
+                </div>
+            </div>
+            <div class="qg-container__quarter-4 qg-scroll-right--action">
+                <div class="qg-quarter__slide-4">
+                    <img class="qg-image-expand" src="gallery-pics/1.jpg">
+                </div>
+            </div>
+            <i class="material-icons md-48 qg-scroll-left qg-scroll-left--action">keyboard_arrow_left</i>
+            <i class="material-icons md-48 qg-scroll-right qg-scroll-right--action">keyboard_arrow_right</i>
+        </div>
+    </body>
+</html>
