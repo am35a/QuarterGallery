@@ -12,17 +12,24 @@
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="js/jquery.QuarterGallery.js"></script>
+
         <script>
-            
+            QG_galleryFolder = 'gallery-pics/';
+            QG_tumbnailPrefix = 'tumb_';
         </script>
     </head>
     <body>
-        <div class="open-gallery" onclick="QuarterGallery()">
-            open-gallery
+        <input type="button" class="open-gallery" value="Open gallery..." onclick="QuarterGallery()">
+        <span>or</span>
+        <div>
+            <img class="QuarterGallery" src="gallery-pics/tumb_1.jpg" width="194px" height="auto">
+            <img class="QuarterGallery" src="gallery-pics/tumb_2.jpg" width="194px" height="auto">
+            <img class="QuarterGallery" src="gallery-pics/tumb_3.jpg" width="194px" height="auto">
+            <img class="QuarterGallery" src="gallery-pics/tumb_4.jpg" width="194px" height="auto">
         </div>
         
-        <div class="qg-container">
-            <div class="qg-container__controls">
+        <div class="qg-container"></div>
+            <!--div class="qg-container__controls">
                 <i class="material-icons qg-fullscreen qg-fullscreen--action">fullscreen_exit</i>
                 <i class="material-icons qg-container-close qg-container-close--action">close</i>
             </div>
@@ -48,6 +55,6 @@
             </div>
             <i class="material-icons md-48 qg-scroll-left qg-scroll-left--action">keyboard_arrow_left</i>
             <i class="material-icons md-48 qg-scroll-right qg-scroll-right--action">keyboard_arrow_right</i>
-        </div>
+        </div-->
     </body>
 </html>
