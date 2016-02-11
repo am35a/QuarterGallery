@@ -37,7 +37,9 @@
     }
 
 /* -- QuarterGallery style sheet -- */
-
+.QuarterGallery {
+    cursor: pointer;
+}
 .qg-container {
     display: none;
     position: fixed;
