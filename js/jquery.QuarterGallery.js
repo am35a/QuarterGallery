@@ -10,6 +10,8 @@ $( function(){
     /*-- create QR gallery html code --*/
     $( '.qg-container' ).html(
         '<div class="qg-container__controls">' +
+        '    <i class="material-icons qg-first-image qg-first-image--action">first_page</i>' +
+        '    <i class="material-icons qg-last-image qg-last-image--action">last_page</i>' +
         '    <i class="material-icons qg-fullscreen qg-fullscreen--action">fullscreen_exit</i>' +
         '    <i class="material-icons qg-container-close qg-container-close--action">close</i>' +
         '</div>' +
@@ -37,11 +39,26 @@ $( function(){
         '<i class="material-icons md-48 qg-scroll-right qg-scroll-right--action">keyboard_arrow_right</i>'
     );
     
-    /*-- close QR gallery view --*/
-    $( '.qg-container-close--action' ).on( 'click', function(){
-        $( '.qg-container' ).hide();
-    });    
-    
+    /*-- jump to first or last images --*/
+    $( '.qg-first-image--action' ).on( 'click', function(){
+        if ( QG_animationEnd && QG_imgNum > 1 ){
+            QG_imgNum = 1;
+            QG_animationEnd = false;
+            QG_direction = 'none';
+            $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( -50vw )' );
+            setTimeout( qgImgReload, 1000, false );
+        }
+    });
+    $( '.qg-last-image--action' ).on( 'click', function(){
+        if ( QG_animationEnd && QG_imgNum < QG_imgLast ){
+            QG_imgNum = QG_imgLast;
+            QG_animationEnd = false;
+            QG_direction = 'none';
+            $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 50vw )' );
+            setTimeout( qgImgReload, 1000, false );
+        }
+    });
+
     /*-- fullscreen enter or exit --*/
     var fullscreen = true;
     $( '.qg-fullscreen--action' ).on( 'click', function(){
@@ -58,6 +75,11 @@ $( function(){
                 .addClass( 'qg-image-expand' );
         }
         fullscreen = !fullscreen;
+    });
+    
+    /*-- close QR gallery view --*/
+    $( '.qg-container-close--action' ).on( 'click', function(){
+        $( '.qg-container' ).hide();
     });
     
     /*-- gallery navigation --*/
@@ -85,12 +107,12 @@ $( function(){
                 cutFirst = str.lastIndexOf( QG_tumbnailPrefix ),
                 cutLast = cutFirst + QG_tumbnailPrefix.length;
             QG_imgNum = +str.slice( cutFirst + QG_tumbnailPrefix.length, -4 );
-            QG_imgLast = 4;
+            QG_imgLast = 4; // - have problem
             QG_direction = 'none';
             QuarterGallery();
     });
 });
-                            
+
 function qgImgReload( onError ){
     if ( onError )
         QG_imgNum = ( QG_direction == 'right' ) ? 1 : --QG_imgLast;
@@ -103,13 +125,13 @@ function qgImgReload( onError ){
         if( QG_direction == 'left' )
             QG_imgNum = ( QG_imgNum > 1 ) ? QG_imgNum - 1 : QG_imgLast;
         $( '[class*=qg-quarter__slide-] img' ).attr( 'src', QG_galleryFolder + QG_imgNum + '.jpg' );
-        $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'rotate( 0 )' );
+        $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 0 )' );
         setTimeout( function(){
             QG_animationEnd = true;
-                $( '.qg-quarter__slide-1' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' )
-                $( '.qg-quarter__slide-2' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' )
-                $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' )
-                $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' )
+                $( '.qg-quarter__slide-1' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+                $( '.qg-quarter__slide-2' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+                $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+                $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
             }, 1000 );
 };
 
@@ -119,6 +141,7 @@ function qgRandomInteger( min, max ){
 }
 
 function QuarterGallery(){
+    QG_direction = 'none';
     qgImgReload( false );
     $( '.qg-container' ).show();
 }
