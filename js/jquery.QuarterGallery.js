@@ -1,3 +1,11 @@
+/*!
+ * QuarterGallery 0.0.5
+ * https://github.com/am35a/QuarterGallery
+ * MIT licensed
+ *
+ * Copyright (C) 2016 mobitoon.ru - A project by Arthur A. Selimov
+ */
+
 var QG_galleryFolder = '',
     QG_tumbnailPrefix = '',
     QG_imgNum = 1,
@@ -107,7 +115,7 @@ $( function(){
                 cutFirst = str.lastIndexOf( QG_tumbnailPrefix ),
                 cutLast = cutFirst + QG_tumbnailPrefix.length;
             QG_imgNum = +str.slice( cutFirst + QG_tumbnailPrefix.length, -4 );
-            QG_imgLast = 4; // - have problem
+            QG_imgLast = $('.QuarterGallery').length;
             QG_direction = 'none';
             QuarterGallery();
     });
