@@ -2,6 +2,8 @@
 
     .material-icons {
         background: rgba( 255, 255, 255, .26 );
+        color: black;
+        -webkit-transition: background .26s;
         transition: background .26s;
     }
     .material-icons:hover {
@@ -32,6 +34,7 @@
         left: 18px;
         top: 50%;
         cursor: pointer;
+        -webkit-transform: translateY( -50% );
         transform: translateY( -50% );
         z-index: 100;
     }
@@ -40,6 +43,7 @@
         top: 50%;
         right: 18px;
         cursor: pointer;
+        -webkit-transform: translateY( -50% );
         transform: translateY( -50% );
         z-index: 100;
     }
@@ -99,11 +103,16 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            transform: rotate( 0deg ) scale( 1, 1 );
-            transition: all .7s;
+            /*transform: rotate( 0deg ) scale( 1, 1 );*/
+            /*transition: all .7s;*/
+            -webkit-transition-property: all;
+            transition-property: all;
+            -webkit-transition-duration: .7s;
+            transition-duration: .7s;
         }
             [class*=qg-quarter__slide-] > img {
                 position: absolute;
+                -webkit-transform: translate( -50%, -50% );
                 transform: translate( -50%, -50% );
             }
             .qg-image-shrink {
@@ -115,32 +124,44 @@
                 min-height: 100vh;
             }
         .qg-quarter__slide-1 {
-            transform-origin: right bottom;
-            transition-delay: 0s
+            /*transform-origin: right bottom;*/
+            -webkit-transform: translateX( -50vw );
+            transform: translateX( -50vw );
+            -webkit-transition-delay: 0s;
+            transition-delay: 0s;
         }
             .qg-quarter__slide-1 > img {
                 left: 100%;
                 top: 100%;
             }
         .qg-quarter__slide-2 {
-            transform-origin: left bottom;
-            transition-delay: 0.3s
+            /*transform-origin: left bottom;*/
+            -webkit-transform: translateX( 50vw );
+            transform: translateX( 50vw );
+            -webkit-transition-delay: 0.3s;
+            transition-delay: 0.3s;
         }
             .qg-quarter__slide-2 > img {
                 left: 0;
                 top: 100%;
             }
         .qg-quarter__slide-3 {
-            transform-origin: right top;
-            transition-delay: 0.2s
+            /*transform-origin: right top;*/
+            -webkit-transform: translateX( -50vw );
+            transform: translateX( -50vw );
+            -webkit-transition-delay: 0.2s;
+            transition-delay: 0.2s;
         }
             .qg-quarter__slide-3 > img {
                 left: 100%;
                 top: 0;
             }
         .qg-quarter__slide-4 {
-            transform-origin: left top;
-            transition-delay: 0.1s
+            /*transform-origin: left top;*/
+            -webkit-transform: translateX( 50vw );
+            transform: translateX( 50vw );
+            -webkit-transition-delay: 0.1s;
+            transition-delay: 0.1s;
         }
             .qg-quarter__slide-4 > img {
                 left: 0;

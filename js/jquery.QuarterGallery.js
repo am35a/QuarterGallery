@@ -1,5 +1,5 @@
 /*!
- * QuarterGallery 0.0.5
+ * QuarterGallery 0.0.6
  * https://github.com/am35a/QuarterGallery
  * MIT licensed
  *
@@ -20,27 +20,27 @@ $( function(){
         '<div class="qg-container__controls">' +
         '    <i class="material-icons qg-first-image qg-first-image--action">first_page</i>' +
         '    <i class="material-icons qg-last-image qg-last-image--action">last_page</i>' +
-        '    <i class="material-icons qg-fullscreen qg-fullscreen--action">fullscreen_exit</i>' +
+        '    <i class="material-icons qg-fullscreen qg-fullscreen--action">fullscreen</i>' +
         '    <i class="material-icons qg-container-close qg-container-close--action">close</i>' +
         '</div>' +
         '<div class="qg-container__quarter-1 qg-scroll-left--action">' +
         '    <div class="qg-quarter__slide-1">' +
-        '        <img class="qg-image-expand" src="' + QG_galleryFolder + QG_imgNum + '.jpg" onerror="qgImgReload( true )">' +
+        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg" onerror="qgImgReload( true )">' +
         '    </div>' +
         '</div>' +
         '<div class="qg-container__quarter-2 qg-scroll-right--action">' +
         '    <div class="qg-quarter__slide-2">' +
-        '        <img class="qg-image-expand" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
+        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
         '    </div>' +
         '</div>' +
         '<div class="qg-container__quarter-3 qg-scroll-left--action">' +
         '    <div class="qg-quarter__slide-3">' +
-        '        <img class="qg-image-expand" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
+        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
         '    </div>' +
         '</div>' +
         '<div class="qg-container__quarter-4 qg-scroll-right--action">' +
         '    <div class="qg-quarter__slide-4">' +
-        '        <img class="qg-image-expand" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
+        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
         '    </div>' +
         '</div>' +
         '<i class="material-icons md-48 qg-scroll-left qg-scroll-left--action">keyboard_arrow_left</i>' +
@@ -68,26 +68,30 @@ $( function(){
     });
 
     /*-- fullscreen enter or exit --*/
-    var fullscreen = true;
+    var fullscreen = false;
     $( '.qg-fullscreen--action' ).on( 'click', function(){
-        if ( fullscreen ){
-            $( '.qg-fullscreen' ).html( 'fullscreen' );
-            $( '[class*=qg-quarter__slide-] img' )
-                .removeClass( 'qg-image-expand' )
-                .addClass( 'qg-image-shrink' );
-        }
-        else {
+        if ( !fullscreen ){
             $( '.qg-fullscreen' ).html( 'fullscreen_exit' );
             $( '[class*=qg-quarter__slide-] img' )
                 .removeClass( 'qg-image-shrink' )
                 .addClass( 'qg-image-expand' );
+        }
+        else {
+            $( '.qg-fullscreen' ).html( 'fullscreen' );
+            $( '[class*=qg-quarter__slide-] img' )
+                .removeClass( 'qg-image-expand' )
+                .addClass( 'qg-image-shrink' );
         }
         fullscreen = !fullscreen;
     });
     
     /*-- close QR gallery view --*/
     $( '.qg-container-close--action' ).on( 'click', function(){
-        $( '.qg-container' ).hide();
+        $( '.qg-quarter__slide-1, .qg-quarter__slide-3' ).css( 'transform', 'translateX( -50vw )' );
+        $( '.qg-quarter__slide-2, .qg-quarter__slide-4' ).css( 'transform', 'translateX( 50vw )' );
+        setTimeout( function(){
+            $( '.qg-container' ).fadeOut( 250 );
+        }, 1000 );
     });
     
     /*-- gallery navigation --*/
@@ -125,22 +129,26 @@ function qgImgReload( onError ){
     if ( onError )
         QG_imgNum = ( QG_direction == 'right' ) ? 1 : --QG_imgLast;
     else
-        if( QG_direction == 'right' )
-            if ( QG_imgNum >= QG_imgLast )
-                QG_imgLast = ++QG_imgNum;
-            else
-                QG_imgNum++;
-        if( QG_direction == 'left' )
-            QG_imgNum = ( QG_imgNum > 1 ) ? QG_imgNum - 1 : QG_imgLast;
-        $( '[class*=qg-quarter__slide-] img' ).attr( 'src', QG_galleryFolder + QG_imgNum + '.jpg' );
-        $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 0 )' );
-        setTimeout( function(){
-            QG_animationEnd = true;
-                $( '.qg-quarter__slide-1' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-                $( '.qg-quarter__slide-2' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-                $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-                $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-            }, 1000 );
+        switch ( QG_direction ){
+            case 'right':
+                if ( QG_imgNum >= QG_imgLast )
+                    QG_imgLast = ++QG_imgNum;
+                else
+                    QG_imgNum++;
+                break;
+            case 'left':
+                QG_imgNum = ( QG_imgNum > 1 ) ? QG_imgNum - 1 : QG_imgLast;
+                break;
+        }
+    $( '[class*=qg-quarter__slide-] img' ).attr( 'src', QG_galleryFolder + QG_imgNum + '.jpg' );
+    $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 0 )' );
+    setTimeout( function(){
+        QG_animationEnd = true;
+        $( '.qg-quarter__slide-1' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+        $( '.qg-quarter__slide-2' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+        $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+        $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+    }, 1400 ); //wait .qg-quarter__slide-1 -- transition-duration * 2 before animation ended
 };
 
 function qgRandomInteger( min, max ){
@@ -150,6 +158,7 @@ function qgRandomInteger( min, max ){
 
 function QuarterGallery(){
     QG_direction = 'none';
-    qgImgReload( false );
-    $( '.qg-container' ).show();
+    $( '.qg-container' ).fadeIn( 250, function() {
+        qgImgReload( false );
+    });
 }
