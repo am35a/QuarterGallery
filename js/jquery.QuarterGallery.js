@@ -6,16 +6,30 @@
  * Copyright (C) 2016 mobitoon.ru - A project by Arthur A. Selimov
  */
 
+
+/*-- include Google Material Icon font for QuarterGallery navigation --*/
+WebFontConfig = { google: { families: [ 'Material+Icons' ] } };
+( function() {
+    var wf = document.createElement( 'script' );
+    wf.src = ( 'https:' == document.location.protocol ? 'https' : 'http' ) + '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName( 'script' )[0];
+    s.parentNode.insertBefore( wf, s );
+} )();
+
+
+/*-- the QuarterGallery JS code --*/
 var QG_galleryFolder = '',
     QG_tumbnailPrefix = '',
     QG_imgNum = 1,
     QG_imgLast = QG_imgNum, /*-- replace imgNum if know the numbers of pics --*/
     QG_direction = 'none',
-    QG_animationEnd = true;
-
+    QG_animationEnd = true,
+    QG_listTable = '';
    
 $( function(){
-    /*-- create QR gallery html code --*/
+    /*-- create QuarterGallery html code --*/
     $( '.qg-container' ).html(
         '<div class="qg-container__controls">' +
         '    <i class="material-icons qg-first-image qg-first-image--action">first_page</i>' +
@@ -44,7 +58,8 @@ $( function(){
         '    </div>' +
         '</div>' +
         '<i class="material-icons md-48 qg-scroll-left qg-scroll-left--action">keyboard_arrow_left</i>' +
-        '<i class="material-icons md-48 qg-scroll-right qg-scroll-right--action">keyboard_arrow_right</i>'
+        '<i class="material-icons md-48 qg-scroll-right qg-scroll-right--action">keyboard_arrow_right</i>' +
+        '<div class="qg_containet__list-table"></div>'
     );
     
     /*-- jump to first or last images --*/
@@ -85,7 +100,7 @@ $( function(){
         fullscreen = !fullscreen;
     });
     
-    /*-- close QR gallery view --*/
+    /*-- close QuarterGallery view --*/
     $( '.qg-container-close--action' ).on( 'click', function(){
         $( '.qg-quarter__slide-1, .qg-quarter__slide-3' ).css( 'transform', 'translateX( -50vw )' );
         $( '.qg-quarter__slide-2, .qg-quarter__slide-4' ).css( 'transform', 'translateX( 50vw )' );
@@ -119,20 +134,39 @@ $( function(){
                 cutFirst = str.lastIndexOf( QG_tumbnailPrefix ),
                 cutLast = cutFirst + QG_tumbnailPrefix.length;
             QG_imgNum = +str.slice( cutFirst + QG_tumbnailPrefix.length, -4 );
-            QG_imgLast = $('.QuarterGallery').length;
+            if( $('.QuarterGallery').length >= QG_imgLast )
+                QG_imgLast = $('.QuarterGallery').length;
             QG_direction = 'none';
             QuarterGallery();
     });
 });
 
+function qgListTable(){
+    $( '.qg_list-table__item.active' ).removeClass( 'active' );
+    if ( !QG_listTable ){
+        var i = 0;
+        do {
+           i += 1;
+           QG_listTable += '<div class="qg_list-table__item"></div>'
+        } while ( i < QG_imgLast )
+        $( '.qg_containet__list-table' ).html( QG_listTable );
+    }
+}
+
 function qgImgReload( onError ){
-    if ( onError )
+    qgListTable();
+    if ( onError ){
         QG_imgNum = ( QG_direction == 'right' ) ? 1 : --QG_imgLast;
+        if( QG_imgNum == 1 )
+            $( '.qg_list-table__item' ).last().remove();
+    }
     else
         switch ( QG_direction ){
             case 'right':
-                if ( QG_imgNum >= QG_imgLast )
+                if ( QG_imgNum >= QG_imgLast ){
+                    $( '.qg_containet__list-table' ).append( '<div class="qg_list-table__item"></div>' );
                     QG_imgLast = ++QG_imgNum;
+                }
                 else
                     QG_imgNum++;
                 break;
@@ -149,6 +183,7 @@ function qgImgReload( onError ){
         $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
         $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
     }, 1400 ); //wait .qg-quarter__slide-1 -- transition-duration * 2 before animation ended
+    $( '.qg_list-table__item:nth-child(' + QG_imgNum + ')' ).addClass( 'active' );
 };
 
 function qgRandomInteger( min, max ){

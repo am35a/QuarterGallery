@@ -1,6 +1,7 @@
 /* -- MDL new elements & modifiers -- */
 
     .material-icons {
+        position: relative;
         background: rgba( 255, 255, 255, .26 );
         color: black;
         -webkit-transition: background .26s;
@@ -64,6 +65,7 @@
 }
     .qg-container__controls {
         display: flex;
+        display: -webkit-flex;
         position: fixed;
         top: 0;
         right: 0;
@@ -167,3 +169,47 @@
                 left: 0;
                 top: 0;
             }
+    .qg_containet__list-table {
+        display: flex;
+        display: -webkit-flex;
+        flex-wrap: wrap;
+        -webkit-flex-wrap: wrap;
+        position: fixed;
+        left: 50%;
+        bottom: 18px;
+        max-width: 144px;
+        -webkit-transform: translateX( -50% );
+        transform: translateX( -50% );
+        z-index: 100;
+    }
+        .qg_list-table__item {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            margin: 3px;
+            background: rgba( 255, 255, 255, .26 );
+            cursor: pointer;
+            -webkit-transition-property: all;
+            transition-property: all;
+            -webkit-transition-duration: .26s;
+            transition-duration: .26s;
+        }
+        .qg_list-table__item:hover {
+            background: rgba( 255, 255, 255, .54 );
+        }
+        .qg_list-table__item::after {
+            content: "";
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 8px;
+            height: 8px;
+            border: 2px solid rgba( 0, 0, 0, 1 );
+        }
+        .qg_list-table__item.active {
+            background: rgba( 0, 0, 0, .26 );
+            cursor: default;
+        }
+        .qg_list-table__item.active::after {
+            border: none;
+        }
