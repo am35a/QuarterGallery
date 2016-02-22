@@ -39,22 +39,22 @@ $( function(){
         '</div>' +
         '<div class="qg-container__quarter-1 qg-scroll-left--action">' +
         '    <div class="qg-quarter__slide-1">' +
-        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg" onerror="qgImgReload( true )">' +
+        '        <img class="qg-image-shrink" src="" onerror="qgImgReload( true )">' +
         '    </div>' +
         '</div>' +
         '<div class="qg-container__quarter-2 qg-scroll-right--action">' +
         '    <div class="qg-quarter__slide-2">' +
-        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
+        '        <img class="qg-image-shrink" src="">' +
         '    </div>' +
         '</div>' +
         '<div class="qg-container__quarter-3 qg-scroll-left--action">' +
         '    <div class="qg-quarter__slide-3">' +
-        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
+        '        <img class="qg-image-shrink" src="">' +
         '    </div>' +
         '</div>' +
         '<div class="qg-container__quarter-4 qg-scroll-right--action">' +
         '    <div class="qg-quarter__slide-4">' +
-        '        <img class="qg-image-shrink" src="' + QG_galleryFolder + QG_imgNum + '.jpg">' +
+        '        <img class="qg-image-shrink" src="" onload="qgOnLoadImage()">' +
         '    </div>' +
         '</div>' +
         '<i class="material-icons md-48 qg-scroll-left qg-scroll-left--action">keyboard_arrow_left</i>' +
@@ -175,6 +175,11 @@ function qgImgReload( onError ){
                 break;
         }
     $( '[class*=qg-quarter__slide-] img' ).attr( 'src', QG_galleryFolder + QG_imgNum + '.jpg' );
+    // -- from here formed qgOnLoadImage function
+    $( '.qg_list-table__item:nth-child(' + QG_imgNum + ')' ).addClass( 'active' );
+};
+
+function qgOnLoadImage(){
     $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 0 )' );
     setTimeout( function(){
         QG_animationEnd = true;
@@ -183,8 +188,7 @@ function qgImgReload( onError ){
         $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
         $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
     }, 1400 ); //wait .qg-quarter__slide-1 -- transition-duration * 2 before animation ended
-    $( '.qg_list-table__item:nth-child(' + QG_imgNum + ')' ).addClass( 'active' );
-};
+}
 
 function qgRandomInteger( min, max ){
     var rand = min + Math.random() * ( max - min )
