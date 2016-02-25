@@ -128,8 +128,7 @@ $( function(){
     });
     
     /*-- gallery open by image click --*/
-    $( 'img.QuarterGallery' )
-        .on( 'click', function(){
+    $( 'img.QuarterGallery' ).on( 'click', function(){
             var str = $( this ).attr( 'src' ),
                 cutFirst = str.lastIndexOf( QG_tumbnailPrefix ),
                 cutLast = cutFirst + QG_tumbnailPrefix.length;
@@ -139,6 +138,11 @@ $( function(){
             QG_direction = 'none';
             QuarterGallery();
     });
+
+    /*-- gallery open by click on attribute num --*/
+    $( document ).on( "click", ".qg_list-table__item:not(.active)", function() {
+        qgShowImageByNum( this );
+    });
 });
 
 function qgListTable(){
@@ -147,9 +151,29 @@ function qgListTable(){
         var i = 0;
         do {
            i += 1;
-           QG_listTable += '<div class="qg_list-table__item"></div>'
+           QG_listTable += '<div class="qg_list-table__item" num="' + i + '"></div>'
         } while ( i < QG_imgLast )
         $( '.qg_containet__list-table' ).html( QG_listTable );
+    }
+}
+
+function qgShowImageByNum( elementClass ) {
+    var currentNum = eval( $( elementClass ).attr( 'num' ) );
+    if ( QG_animationEnd ){
+        QG_animationEnd = false;
+        if ( QG_imgNum > currentNum ) {
+            QG_direction = 'left';
+            $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( -50vw )' );
+            QG_imgNum = currentNum + 1;
+        }
+        if ( QG_imgNum < currentNum ) {
+            QG_direction = 'right';            
+            $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 50vw )' );
+            QG_imgNum = currentNum - 1;
+        }
+        setTimeout( qgImgReload, 1000, false );
+
+        console.log( QG_direction, QG_imgNum );
     }
 }
 
@@ -164,7 +188,7 @@ function qgImgReload( onError ){
         switch ( QG_direction ){
             case 'right':
                 if ( QG_imgNum >= QG_imgLast ){
-                    $( '.qg_containet__list-table' ).append( '<div class="qg_list-table__item"></div>' );
+                    $( '.qg_containet__list-table' ).append( '<div class="qg_list-table__item" num="' + QG_imgNum + '"></div>' );
                     QG_imgLast = ++QG_imgNum;
                 }
                 else
