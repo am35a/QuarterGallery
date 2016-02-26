@@ -26,6 +26,7 @@ var QG_galleryFolder = '',
     QG_imgLast = QG_imgNum, /*-- replace imgNum if know the numbers of pics --*/
     QG_direction = 'none',
     QG_animationEnd = true,
+    QG_openOnce = false,
     QG_listTable = '';
    
 $( function(){
@@ -178,40 +179,44 @@ function qgShowImageByNum( elementClass ) {
 }
 
 function qgImgReload( onError ){
-    qgListTable();
-    if ( onError ){
-        QG_imgNum = ( QG_direction == 'right' ) ? 1 : --QG_imgLast;
-        if( QG_imgNum == 1 )
-            $( '.qg_list-table__item' ).last().remove();
-    }
-    else
-        switch ( QG_direction ){
-            case 'right':
-                if ( QG_imgNum >= QG_imgLast ){
-                    $( '.qg_containet__list-table' ).append( '<div class="qg_list-table__item" num="' + QG_imgNum + '"></div>' );
-                    QG_imgLast = ++QG_imgNum;
-                }
-                else
-                    QG_imgNum++;
-                break;
-            case 'left':
-                QG_imgNum = ( QG_imgNum > 1 ) ? QG_imgNum - 1 : QG_imgLast;
-                break;
+    if ( QG_openOnce ){
+        qgListTable();
+        if ( onError ){
+            QG_imgNum = ( QG_direction == 'right' ) ? 1 : --QG_imgLast;
+            if( QG_imgNum == 1 )
+                $( '.qg_list-table__item' ).last().remove();
         }
-    $( '[class*=qg-quarter__slide-] img' ).attr( 'src', QG_galleryFolder + QG_imgNum + '.jpg' );
-    // -- from here formed qgOnLoadImage function
-    $( '.qg_list-table__item:nth-child(' + QG_imgNum + ')' ).addClass( 'active' );
+        else
+            switch ( QG_direction ){
+                case 'right':
+                    if ( QG_imgNum >= QG_imgLast ){
+                        $( '.qg_containet__list-table' ).append( '<div class="qg_list-table__item" num="' + QG_imgNum + '"></div>' );
+                        QG_imgLast = ++QG_imgNum;
+                    }
+                    else
+                        QG_imgNum++;
+                    break;
+                case 'left':
+                    QG_imgNum = ( QG_imgNum > 1 ) ? QG_imgNum - 1 : QG_imgLast;
+                    break;
+            }
+        $( '[class*=qg-quarter__slide-] img' ).attr( 'src', QG_galleryFolder + QG_imgNum + '.jpg' );
+        // -- from here formed qgOnLoadImage function
+        $( '.qg_list-table__item:nth-child(' + QG_imgNum + ')' ).addClass( 'active' );
+    }
 };
 
 function qgOnLoadImage(){
-    $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 0 )' );
-    setTimeout( function(){
-        QG_animationEnd = true;
-        $( '.qg-quarter__slide-1' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-        $( '.qg-quarter__slide-2' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-        $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-        $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
-    }, 1400 ); //wait .qg-quarter__slide-1 -- transition-duration * 2 before animation ended
+    if ( QG_openOnce ){
+        $( '[class*=qg-quarter__slide-]' ).css( 'transform', 'translateX( 0px )' );
+        setTimeout( function(){
+            QG_animationEnd = true;
+            $( '.qg-quarter__slide-1' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+            $( '.qg-quarter__slide-2' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+            $( '.qg-quarter__slide-3' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+            $( '.qg-quarter__slide-4' ).css( 'transition-delay', qgRandomInteger( 0, 0.3 ) + 's' );
+        }, 1400 ); //wait .qg-quarter__slide-1 -- transition-duration * 2 before animation ended
+    }
 }
 
 function qgRandomInteger( min, max ){
@@ -220,6 +225,7 @@ function qgRandomInteger( min, max ){
 }
 
 function QuarterGallery(){
+    QG_openOnce = true;
     QG_direction = 'none';
     $( '.qg-container' ).fadeIn( 250, function() {
         qgImgReload( false );
