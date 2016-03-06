@@ -18,9 +18,12 @@
         </script>
     </head>
     <body>
-        <section class="qg-container"></section>
+        <section id="qg-container" class="qg-container"></section>
         
-        <button class="open-gallery" onclick="QuarterGallery()">Open gallery...</button>
+        <div>
+            <button class="open-gallery" onclick="QG_openOnce = false; QG_listTable = ''; QG_galleryFolder = 'gallery-pics/'; QG_imgNum = 1; QG_imgLast = 10; QuarterGallery();">Open first gallery...</button>
+            <button class="open-gallery" onclick="QG_openOnce = false; QG_listTable = ''; QG_galleryFolder = 'gallery-pics/sketch/'; QG_imgNum = 1; QG_imgLast = 5; QuarterGallery();">Open second gallery...</button> <!--QG_openOnce = false; QG_galleryFolder = 'gallery-pics/sketch/';-->
+        </div>
         <span>or open by click at tumbnails:</span>
         <div class="pics-gallery">
             <img class="QuarterGallery" src="gallery-pics/tumb_1.jpg">
